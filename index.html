@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>PPA - Portal de Projetos Acadêmicos</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/layout.css">
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a id="logo_navbar" href="index.html">
+                        <img width="122" height="79" src="imgs/logo_fatec_br.png" alt="Home">
+                    </a>
+                </li>
+
+                <li class="dropdown">
+                    <a class="dropbtn">Projetos <i class="fa-solid fa-caret-down"></i></a>
+                    <div class="dropdown-content" id="menuProjetos">
+                        <!-- opções são adicionadas automaticamente via JS -->
+                    </div>
+                </li>
+
+
+                <li><button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button></li>
+
+
+                <li style="float:right;">
+                    <a href="#" onclick="logout()">Sair</a> <!--Dps tem q adicionar o link pra pagina d login aq-->
+                </li>
+
+                <li style="float:right;">
+                    <a id="nomeUsuario">Carregando...</a>
+                </li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <main style="padding: 30px;">
+
+        <section class="accordion">
+
+            <div class="accordion-item">
+                <button class="accordion-header">Como Funciona</button>
+                <div class="accordion-content">
+                    <p>
+                        Aqui vai aquele texto explicando como os alunos e professores participam
+                        do projeto, etc...
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">Relatórios</button>
+                <div class="accordion-content">
+                    <p>
+                        Aqui vai texto sobre os tipos de relatórios disponíveis...
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- DASHBOARD PROFESSOR -->
+        <section id="sec-professor" style="display:none;">
+            <h2>Área do Professor</h2>
+
+            <div class="cards">
+                <a href="cadastrar_projeto.html" class="card">
+                    <h3>➕ Criar Projeto</h3>
+                    <p>Iniciar um novo projeto acadêmico.</p>
+                </a>
+
+                <a href="gerenciar_iniciativas.html" class="card">
+                    <h3>📑 Gerenciar Iniciativas</h3>
+                    <p>Adicionar etapas, organizar cronogramas.</p>
+                </a>
+
+                <a href="validar_evidencias.html" class="card">
+                    <h3>✅ Validar Evidências</h3>
+                    <p>Aprovar ou rejeitar evidências enviadas.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- DASHBOARD ALUNO -->
+        <section id="sec-aluno" style="display:none;">
+            <h2>Área do Aluno</h2>
+
+            <div class="cards">
+                <a href="projetos.html" class="card">
+                    <h3>🔍 Ver Projetos Disponíveis</h3>
+                    <p>Conheça projetos abertos e seus objetivos.</p>
+                </a>
+
+                <a href="meus_projetos.html" class="card">
+                    <h3>📝 Meus projetos</h3>
+                    <p>projetos dos quais vc participa</p>
+                </a>
+
+                <a href="enviar_evidencias.html" class="card">
+                    <h3>⬆️ Enviar Evidências</h3>
+                    <p>Comprove sua participação.</p>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="js/escripiti.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

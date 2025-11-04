@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <title>Projetos | PPA</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/layout.css">
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a id="logo_navbar" href="index.html">
+                        <img width="122" height="79" src="imgs/logo_fatec_br.png" alt="Home">
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a class="dropbtn">Projetos <i class="fa-solid fa-caret-down"></i></a>
+                    <div class="dropdown-content" id="menuProjetos">
+                        <!-- opções são adicionadas automaticamente via JS -->
+                    </div>
+                </li>
+                <li><button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button></li>
+
+                <li style="float:right;">
+                    <a href="#" onclick="logout()">Sair</a>
+                </li>
+
+                <li style="float:right;">
+                    <a id="nomeUsuario">Carregando...</a>
+                </li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <main style="padding: 30px;">
+        <h2 class="title">Projetos Disponíveis</h2>
+        <p id="descricaoPagina" class="subtitle"></p>
+
+        <div id="listaProjetos" class="cards"></div>
+    </main>
+
+
+    <script src="js/escripiti.js"></script>
+    <script src="js/projetos.js"></script>
+
+</body>
+
+</html>
