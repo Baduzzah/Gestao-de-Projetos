@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <title>Gerenciar Projeto | PPA</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a id="logo_navbar" href="index.html"><img width="122" src="imgs/logo_fatec_br.png"></a></li>
+                <li class="dropdown">
+                    <a class="dropbtn">Projetos <i class="fa-solid fa-caret-down"></i></a>
+                    <div class="dropdown-content" id="menuProjetos"></div>
+                </li>
+                <li><button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button></li>
+                <li style="float:right;"><a href="#" onclick="logout()">Sair</a></li>
+                <li style="float:right;"><a id="nomeUsuario">Carregando...</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main style="padding: 30px; max-width: 1000px; margin: auto;">
+
+
+
+
+        <h2 class="title" id="nomeProjeto"></h2>
+        <p class="subtitle">Gerencie etapas, iniciativas e participantes.</p>
+
+        <div id="listaProjetosGerenciar" class="lista-projetos" style="display:none; margin-top:25px;"></div>
+
+        <!-- Abas -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tab-etapas">Etapas</button>
+            <button class="tab-btn" data-tab="tab-iniciativas">Iniciativas</button>
+            <button class="tab-btn" data-tab="tab-participantes">Participantes</button>
+            <button class="tab-btn" data-tab="tab-config">Configurações</button>
+
+        </div>
+
+        <!-- Conteúdo das abas -->
+        <div class="card_n_hov">
+            
+            <!--ETAPAS-->
+            <section id="tab-etapas" class="tab active">
+                <h3>Etapas</h3>
+                <div id="listaEtapas" class="lista-projetos"></div>
+
+                <div class="campo-form" style="margin-top: 20px;">
+                    <label>Nova etapa</label>
+                    <input type="text" id="novaEtapaNome" placeholder="Ex: Pesquisa inicial">
+                </div>
+                <button class="botao-primario" id="btnAddEtapa">Adicionar Etapa</button>
+            </section>
+
+            <!--INICIATIVAS-->
+            <section id="tab-iniciativas" class="tab">
+                <h3>Iniciativas</h3>
+                <div id="listaIniciativas" class="lista-projetos"></div>
+
+                <div class="campo-form" style="margin-top: 20px;">
+                    <label>Nome da Iniciativa</label>
+                    <input type="text" id="novaIniciativaNome" placeholder="Ex: Oficina de montagem">
+
+                    <label>Etapa relacionada</label>
+                    <select id="selectEtapaRef"></select>
+                </div>
+
+                <button class="botao-primario" id="btnAddIniciativa">Adicionar Iniciativa</button>
+            </section>
+
+            <!--PARTICIPANTES-->
+            <section id="tab-participantes" class="tab">
+                <h3>Participantes</h3>
+                <div id="listaParticipantes" class="lista-projetos"></div>
+            </section>
+
+            <!--CONFIG D PROJETO-->
+            <section id="tab-config" class="tab">
+                <h3>Configurações do Projeto</h3>
+
+                <div class="campo-form">
+                    <label>Título</label>
+                    <input type="text" id="editTitulo">
+                </div>
+
+                <div class="campo-form">
+                    <label>Temática</label>
+                    <input type="text" id="editTematica">
+                </div>
+
+                <div class="campo-form">
+                    <label>Descrição</label>
+                    <textarea id="editDescricao" rows="4"></textarea>
+                </div>
+
+                <div class="grupo-linha">
+                    <div class="campo-form">
+                        <label>Data Inicial (real)</label>
+                        <input type="date" id="editInicioReal">
+                    </div>
+
+                    <div class="campo-form">
+                        <label>Data Final (real)</label>
+                        <input type="date" id="editFimReal">
+                    </div>
+                </div>
+
+                <div class="campo-form">
+                    <label>Curso/Unidade</label>
+                    <select id="editCurso">
+                        <option value="ADS">Análise e Desenvolvimento de Sistemas</option>
+                        <option value="SI">Sistemas para Internet</option>
+                        <option value="Logística">Logística</option>
+                        <option value="Recursos Humanos">Recursos Humanos</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+
+                <button class="botao-primario" id="btnSalvarConfig">Salvar Alterações</button>
+
+                <hr style="margin: 25px 0; opacity:.4;">
+
+                <h3>Finalizar Projeto</h3>
+                <p class="subtitle">Ao finalizar, o projeto não aceitará novas inscrições.</p>
+
+                <button class="botao-primario" id="btnFinalizarProjeto">Finalizar Projeto</button>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="js/escripiti.js"></script>
+    <script src="js/gerenciar_iniciativas.js"></script>
+
+</body>
+
+</html>

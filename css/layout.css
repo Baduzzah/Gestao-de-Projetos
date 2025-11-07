@@ -2,21 +2,36 @@
   --bg: #f7f7f9;
   --surface: #ffffff;
   --text: #222222;
-  --muted: #44454a;
+  --muted: #9699a950;
   --primary: #B00D15;
   --light_prim: #BF3B46;
+
+  /*tmb usados pros status das evidencias*/
+  --aberto: #509523;
+  --andamento: #2980b9;
+  --concluido: #736476;
+  --rejeitado: #e74c3c;
+  --pendente: #FFB300;
 
   --primary-contrast: #ffffff;
   --card-shadow: 0 6px 18px rgba(32, 32, 32, 0.06);
 }
 
+
 [data-theme='dark'] {
   --bg: #1d1d1e;
   --surface: #0b0c0d;
   --text: #e9e9ee;
-  --muted: #a3a2a2;
+  --muted: #3f3b3b36;
   --primary: #740c11;
   --light_prim: #940611;
+
+  --aberto: #2d5413;
+  --andamento: #21558d;
+  --concluido: #756a78;
+  --rejeitado: #610505;
+  --pendente: #ffb300b4;
+
 }
 
 /* Botão de alternar tema */
@@ -80,12 +95,22 @@ ul li a:hover {
 }
 
 
-
-/*cor do texto do dropdown d projetos*/
-.popup{
+input {
+  background-color: var(--bg);
   color: var(--text);
 }
-.popup:hover{
+
+textarea {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+/*cor do texto do dropdown d projetos*/
+.popup {
+  color: var(--text);
+}
+
+.popup:hover {
   color: var(--primary-contrast);
 }
 
@@ -107,6 +132,16 @@ ul li a:hover {
 
 .card {
   background: var(--surface);
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.2s ease;
+}
+
+.card_n_hov {
+  background: var(--muted);
   padding: 18px;
   border-radius: 12px;
   box-shadow: var(--card-shadow);
@@ -165,7 +200,7 @@ ul li a:hover {
   padding: 0 18px;
   overflow: hidden;
   transition: max-height 0.35s ease, padding 0.35s ease;
-  color: var(--muted);
+  color: var(--text);
 }
 
 .accordion-item.active .accordion-content {
@@ -176,7 +211,8 @@ ul li a:hover {
 .dropdown-content {
   display: none;
   position: fixed;
-  left: 0; /* será reposicionado via JS */
+  left: 0;
+  /* será reposicionado via JS */
   top: 70px;
   background: var(--surface);
   box-shadow: var(--card-shadow);
@@ -197,4 +233,246 @@ ul li a:hover {
   display: block;
   background-color: var(--surface);
   color: var(--text);
+}
+
+
+/* LISTA DE PROJETOS — estilo tabela horizontal */
+.lista-projetos {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 25px;
+}
+
+.item-projeto {
+  display: grid;
+  grid-template-columns: 8px 2fr 1fr 1fr auto;
+  align-items: center;
+  background: var(--surface);
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+  padding: 14px 18px;
+  gap: 16px;
+}
+
+/* barra lateral de status */
+.item-projeto .status {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+}
+
+/* cores de status */
+.status-aberto {
+  background: var(--aberto);
+}
+
+.status-em-andamento {
+  background: var(--andamento);
+}
+
+.status-concluido {
+  background: var(--concluido);
+}
+
+.status-rejeitado {
+  background: var(--rejeitado);
+}
+
+/* botão abrir */
+.botao-abrir {
+  background: var(--light_prim);
+  color: var(--primary-contrast);
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.botao-abrir:hover {
+  background: var(--primary);
+}
+
+/* --- DETALHES DO PROJETO --- */
+
+.detalhes-projeto {
+  background: var(--surface);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  margin-top: 20px;
+  display: grid;
+  gap: 12px;
+}
+
+.detalhes-projeto div strong {
+  color: var(--primary);
+}
+
+.acoes {
+  margin-top: 25px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.botao-primario {
+  background: var(--primary);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.botao-secundario {
+  background: var(--light_prim);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.botao-primario:hover,
+.botao-secundario:hover {
+  opacity: 0.85;
+}
+
+.campo-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+.campo-form label {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+input[type="file"],
+select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--muted);
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* Botão principal */
+.botao-primario {
+  background: var(--primary);
+  color: var(--primary-contrast);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.botao-primario:hover {
+  background: var(--light_prim);
+  transform: translateY(-2px);
+}
+
+.botao-primario:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/* Lista de evidências no formato "linhas" */
+.item-evidencia {
+  display: grid;
+  grid-template-columns: 6px 1fr auto;
+  background: var(--surface);
+  padding: 14px 12px;
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+  align-items: center;
+}
+
+.status-pendente {
+  width: 6px;
+  height: 100%;
+  border-radius: 4px;
+  background: #FFB300;
+}
+
+.evidencia-nome {
+  font-weight: 600;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--card-shadow);
+  font-weight: 600;
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: var(--primary-contrast);
+}
+
+.tab {
+  display: none;
+}
+
+.tab.active {
+  display: block;
+}
+
+.grupo-linha {
+  display: flex;
+  gap: 20px;
+}
+
+.grupo-linha .campo-form {
+  flex: 1;
+}
+
+.filtros-box {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.filtros-box input,
+.filtros-box select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--muted);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.lista-projetos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item-projeto {
+  display: grid;
+  grid-template-columns: 18px 1fr auto auto auto;
+  align-items: center;
+  padding: 12px 14px;
+  background: var(--surface);
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
 }

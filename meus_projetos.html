@@ -38,12 +38,27 @@
 
     </header>
 
-    <main style="padding: 30px;">
-        <h2 class="title" id="tituloPagina">Meus Projetos</h2>
-        <p id="descricaoPagina" class="subtitle"></p>
+    <main style="padding: 30px; max-width: 1000px; margin:auto;">
 
-        <div id="listaMeusProjetos" class="cards"></div>
+        <h2 class="title">Meus Projetos</h2>
+        <p id="descricaoPagina" class="subtitle">Projetos nos quais você está participando.</p>
+
+        <!-- BARRA DE PESQUISA -->
+        <div class="filtros-box">
+            <input type="text" id="filtroTexto" placeholder="Pesquisar por nome ou temática...">
+
+            <select id="filtroStatus">
+                <option value="">Todos os status</option>
+                <option value="aberto">Aberto</option>
+                <option value="em andamento">Em andamento</option>
+                <option value="finalizado">Finalizado</option>
+            </select>
+        </div>
+
+        <div class="lista-projetos"></div>
+
     </main>
+
 
     <script src="js/escripiti.js"></script>
     <script src="js/meus_projetos.js"></script>

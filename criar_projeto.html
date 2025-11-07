@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <title>Criar Projeto | PPA</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a id="logo_navbar" href="index.html"><img width="122" src="imgs/logo_fatec_br.png"></a></li>
+                <li class="dropdown">
+                    <a class="dropbtn">Projetos <i class="fa-solid fa-caret-down"></i></a>
+                    <div class="dropdown-content" id="menuProjetos"></div>
+                </li>
+                <li><button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button></li>
+                <li style="float:right;"><a href="#" onclick="logout()">Sair</a></li>
+                <li style="float:right;"><a id="nomeUsuario">Carregando...</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main style="padding: 30px; max-width: 800px; margin: auto;">
+        <h2 class="title">Criar Novo Projeto</h2>
+        <p class="subtitle">Preencha as informações abaixo para cadastrar um novo projeto.</p>
+
+        <div class="card_n_hov" style="padding: 18px;">
+
+            <div class="campo-form">
+                <label>Título do Projeto</label>
+                <input type="text" id="tituloProjeto" placeholder="Ex: Feira de Robótica Sustentável">
+            </div>
+
+            <div class="campo-form">
+                <label>Temática (resumo curto)</label>
+                <input type="text" id="tematicaProjeto" placeholder="Ex: Desenvolvimento tecnológico ecológico">
+            </div>
+
+            <div class="campo-form">
+                <label>Descrição Completa</label>
+                <textarea id="descricaoProjeto" rows="4"
+                    placeholder="Explique o objetivo, contexto e relevância do projeto."></textarea>
+            </div>
+
+            <div class="grupo-linha">
+                <div class="campo-form">
+                    <label>Data de Início (prevista)</label>
+                    <input type="date" id="dataInicio">
+                </div>
+
+                <div class="campo-form">
+                    <label>Data de Término (prevista)</label>
+                    <input type="date" id="dataFim">
+                </div>
+            </div>
+
+            <div class="campo-form">
+                <label>Curso / Unidade participante</label>
+                <select id="cursoProjeto">
+                    <option value="">Selecione...</option>
+                    <option value="ADS">Análise e Desenvolvimento de Sistemas</option>
+                    <option value="CD">Ciência de Dados</option>
+                    <option value="DC">Defesa Cibernética</option>
+                    <option value="Eventos">Eventos</option>
+                    <option value="GA">Gestão Ambiental</option>
+                    <option value="GLI">Gestão de Logistica Integrada</option>
+                    <option value="GTI">Gestão da Tecnologia da Informação</option>
+                    <option value="SE">Sistemas Embarcados</option>
+                </select>
+            </div>
+
+            <hr style="margin: 25px 0; opacity: .5;">
+
+            <h3 style="margin-bottom: 8px;">Professores Responsáveis</h3>
+
+            <div id="listaProfs" class="lista-projetos" style="margin-bottom: 20px;"></div>
+
+            <div class="grupo-linha">
+                <div class="campo-form">
+                    <label>Nome do Professor</label>
+                    <input type="text" id="profNome" placeholder="Ex: Maria Oliveira">
+                </div>
+
+                <div class="campo-form">
+                    <label>Disciplina</label>
+                    <input type="text" id="profDisciplina" placeholder="Ex: Gestão de Projetos">
+                </div>
+            </div>
+
+            <button class="botao-secundario" id="btnAddProf">Adicionar Professor</button>
+
+            <br><br>
+            <button class="botao-primario" id="btnSalvarProjeto" style="width:100%;">Salvar Projeto</button>
+
+        </div>
+    </main>
+
+
+    <script src="js/escripiti.js"></script>
+    <script src="js/criar_projeto.js"></script>
+
+</body>
+
+</html>

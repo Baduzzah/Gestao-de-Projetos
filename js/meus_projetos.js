@@ -1,50 +1,53 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  let usuario = JSON.parse(localStorage.getItem('usuario'));
-  if (!usuario) {
-    usuario = { nome: "Usuário Teste", role: "aluno" };
-    localStorage.setItem("usuario", JSON.stringify(usuario));
-  }
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  document.getElementById("nomeUsuario").textContent = usuario?.nome || "Usuário";
 
-  document.getElementById("nomeUsuario").textContent = usuario.nome;
+  let projetos = JSON.parse(localStorage.getItem("projetos") || "[]");
 
-  // Simulação para testes (troque depois pelo banco):
-  const meusProjetosAluno = [1, 3]; // projetos que o aluno participa
-  const meusProjetosProfessor = [2]; // projetos que o professor coordena
-
-  const projetos = [
-    { id: 1, titulo: "Robótica Sustentável", publico: "Engenharia", status: "aberto" },
-    { id: 2, titulo: "Feira de Jogos Educacionais", publico: "ADS / SI", status: "aberto" },
-    { id: 3, titulo: "Banco de Alimentos Comunitário", publico: "Logística", status: "em andamento" }
-  ];
-
-  let filtrados = [];
-
+  // ALUNO → mostra projetos que ele participa
   if (usuario.role === "aluno") {
-    document.getElementById("descricaoPagina").textContent = "Projetos nos quais você está inscrito.";
-    filtrados = projetos.filter(p => meusProjetosAluno.includes(p.id));
-
-  } else if (usuario.role === "professor") {
-    document.getElementById("descricaoPagina").textContent = "Projetos pelos quais você é responsável.";
-    filtrados = projetos.filter(p => meusProjetosProfessor.includes(p.id));
+    projetos = projetos.filter(p =>
+      p.participantes?.some(part => part.nome === usuario.nome)
+    );
   }
 
-  const lista = document.getElementById("listaMeusProjetos");
+  // PROFESSOR → mostra projetos que ele coordena
+  if (usuario.role === "professor") {
+    projetos = projetos.filter(p =>
+      p.profsResponsaveis?.some(prof => prof.nome === usuario.nome)
+    );
+  }
 
-  lista.innerHTML = "";
+  const lista = document.querySelector(".lista-projetos");
 
-  filtrados.forEach(p => {
-    const card = document.createElement("a");
-    card.className = "card";
-    card.href = `projeto_detalhes.html?id=${p.id}`;
+  function render() {
 
-    card.innerHTML = `
-      <h3>${p.titulo}</h3>
-      <p><strong>Público:</strong> ${p.publico}</p>
-      <p><strong>Status:</strong> ${p.status}</p>
-    `;
+    const texto = document.getElementById("filtroTexto").value.toLowerCase();
+    const status = document.getElementById("filtroStatus")?.value || "";
 
-    lista.appendChild(card);
-  });
+    lista.innerHTML = "";
+
+    projetos
+      .filter(p => p.titulo.toLowerCase().includes(texto) || (p.tematica || "").toLowerCase().includes(texto))
+      .filter(p => status === "" || p.status === status)
+      .forEach(p => {
+        const statusClass = "status-" + p.status.replaceAll(" ", "-");
+
+        lista.innerHTML += `
+          <div class="item-projeto">
+            <div class="status ${statusClass}"></div>
+            <div><strong>${p.titulo}</strong><br><small>${p.tematica || ""}</small></div>
+            <div><small>${p.status}</small></div>
+            <a href="projeto_detalhes.html?id=${p.id}" class="botao-abrir">abrir</a>
+          </div>
+        `;
+      });
+  }
+
+  render();
+
+  document.getElementById("filtroTexto").oninput = render;
+  document.getElementById("filtroStatus")?.addEventListener("change", render);
 
 });

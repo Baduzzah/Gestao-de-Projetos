@@ -1,64 +1,55 @@
-
 document.addEventListener('DOMContentLoaded', () => {
-  
-  let usuario = null;
-  try {
-    usuario = JSON.parse(localStorage.getItem('usuario'));
-  } catch (err) {
-    usuario = null;
-  }
 
-  if (!usuario) {
-    // comente as próximas linhas quando tiver login funcionando
-    usuario = { nome: 'Usuário Teste', role: 'aluno' }; // role: 'aluno' ou 'professor'
-    localStorage.setItem('usuario', JSON.stringify(usuario));
-    console.info('usuario não encontrado — criando mock temporário:', usuario);
-  }
+  let usuario = JSON.parse(localStorage.getItem('usuario')) || { role: 'aluno', nome: 'Visitante' };
+  document.getElementById("nomeUsuario").textContent = usuario.nome;
 
-  // dados de exemplo
-  const projetos = [
-    { id: 1, titulo: "Robótica Sustentável", publico: "Engenharia", status: "aberto" },
-    { id: 2, titulo: "Feira de Jogos Educacionais", publico: "ADS / SI", status: "aberto" },
-    { id: 3, titulo: "Banco de Alimentos Comunitário", publico: "Logística", status: "em andamento" }
+  // Carrega projetos criados | ou usa exemplos caso ainda não exista nada ((dps tem q apagar iss))
+  let projetos = JSON.parse(localStorage.getItem("projetos")) || [
+    { id: 1, titulo: "Robótica Sustentável", curso: "GTI", status: "aberto", tematica: "Sustentabilidade" },
+    { id: 2, titulo: "Feira de Jogos Educacionais", curso: "ADS", status: "aberto", tematica: "Educação" },
+    { id: 3, titulo: "Banco de Alimentos Comunitário", curso: "GLI", status: "em andamento", tematica: "Impacto Social" }
   ];
 
-  const lista = document.getElementById("listaProjetos");
-  const descricao = document.getElementById("descricaoPagina");
 
-  if (!lista) {
-    console.error('Elemento #listaProjetos não encontrado no DOM. Verifique se o id existe no HTML.');
-    return;
-  }
+  const lista = document.querySelector(".lista-projetos");
 
-  if (descricao) {
-    if (usuario.role === "professor") {
-      descricao.textContent = "Projetos que você coordena ou participa.";
-    } else {
-      descricao.textContent = "Projetos disponíveis para participação.";
-    }
-  } else {
-    console.warn('Elemento #descricaoPagina ausente — pulando texto descritivo.');
-  }
+  function render() {
+    const texto = document.getElementById("filtroTexto").value.toLowerCase();
+    const curso = document.getElementById("filtroCurso").value;
+    const status = document.getElementById("filtroStatus").value;
 
-  // limpa antes de renderizar
-  lista.innerHTML = "";
+    lista.innerHTML = "";
 
-  // renderiza cards
-  projetos.forEach(p => {
-    const card = document.createElement("a");
-    card.className = "card";
-    card.href = `projeto_detalhes.html?id=${p.id}`;
+    projetos
+      .filter(p => p.titulo.toLowerCase().includes(texto) || (p.tematica || "").toLowerCase().includes(texto))
+      .filter(p => curso === "" || p.curso === curso)
+      .filter(p => status === "" || p.status === status)
+      .forEach(p => {
 
-    card.innerHTML = `
-      <h3>${p.titulo}</h3>
-      <p><strong>Público:</strong> ${p.publico}</p>
-      <p><strong>Status:</strong> ${p.status}</p>
+        const statusClass = "status-" + p.status.toLowerCase().replaceAll(" ", "-");
+
+        lista.innerHTML += `
+      <div class="item-projeto">
+        <div class="status ${statusClass}"></div>
+
+        <div>
+          <strong>${p.titulo}</strong><br>
+          <small>${p.tematica || ""}</small>
+        </div>
+
+        <div><small>${p.curso}</small></div>
+        <div><small>${p.status}</small></div>
+
+        <a href="projeto_detalhes.html?id=${p.id}" class="botao-abrir">abrir</a>
+      </div>
     `;
+      });
 
-    lista.appendChild(card);
-  });
+  }
 
-  // mostra nome do usuário
-  const nomeEl = document.getElementById('nomeUsuario');
-  if (nomeEl) nomeEl.textContent = usuario.nome || 'Usuário';
+  render();
+
+  document.getElementById("filtroTexto").oninput = render;
+  document.getElementById("filtroCurso").onchange = render;
+  document.getElementById("filtroStatus").onchange = render;
 });

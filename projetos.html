@@ -38,12 +38,41 @@
 
     </header>
 
-    <main style="padding: 30px;">
+
+    <main style="padding: 30px; max-width: 1000px; margin:auto;">
+
         <h2 class="title">Projetos Disponíveis</h2>
         <p id="descricaoPagina" class="subtitle"></p>
 
-        <div id="listaProjetos" class="cards"></div>
+        <!-- BARRA DE PESQUISA -->
+        <div class="filtros-box">
+            <input type="text" id="filtroTexto" placeholder="Pesquisar por nome ou temática...">
+
+            <select id="filtroCurso">
+                <option value="">Todos os cursos</option>
+                <option value="ADS">Análise e Desenvolvimento de Sistemas</option>
+                <option value="CD">Ciência de Dados</option>
+                <option value="DC">Defesa Cibernética</option>
+                <option value="Eventos">Eventos</option>
+                <option value="GA">Gestão Ambiental</option>
+                <option value="GLI">Gestão de Logística Integrada</option>
+                <option value="GTI">Gestão da Tecnologia da Informação</option>
+                <option value="SE">Sistemas Embarcados</option>
+            </select>
+
+
+            <select id="filtroStatus">
+                <option value="">Todos os status</option>
+                <option value="aberto">Aberto</option>
+                <option value="em andamento">Em andamento</option>
+                <option value="finalizado">Finalizado</option>
+            </select>
+        </div>
+
+        <div class="lista-projetos"></div>
+
     </main>
+
 
 
     <script src="js/escripiti.js"></script>

@@ -1,8 +1,8 @@
 // Obtém usuário logado (de teste) ou redireciona para login futuramente
 const usuario = JSON.parse(localStorage.getItem("usuario"));
 
-// testes (uma linha por vez):
-localStorage.setItem("usuario", JSON.stringify({ nome: "Professor: Marcos", role: "professor" }))
+// teste de usuarios: (uma linha por vez)  ou ctrl + ç nas paginas, pra abrir o debug
+//localStorage.setItem("usuario", JSON.stringify({ nome: "Professor: Marcos", role: "professor" }))
 //localStorage.setItem("usuario", JSON.stringify({ nome: "Aluno: Ana", role: "aluno" }))
 
 
@@ -106,6 +106,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // fecha ao clicar fora
     document.addEventListener("click", (e) => {
         if (!parent.contains(e.target)) parent.classList.remove("show");
+    });
+
+    // === Atalho de Debug (Ctrl + D) ===
+    // Abre debug.html sem interferir no uso normal
+    document.addEventListener("keydown", function (e) {
+        if (e.ctrlKey && e.key.toLowerCase() === "ç") {
+            e.preventDefault();
+            window.location.href = "debug.html";
+        }
     });
 });
 

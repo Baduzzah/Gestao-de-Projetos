@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <title>Enviar Evidências | PPA</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+  <header>
+    <nav>
+      <ul>
+        <li><a id="logo_navbar" href="index.html"><img width="122" src="imgs/logo_fatec_br.png"></a></li>
+        <li class="dropdown">
+          <a class="dropbtn">Projetos <i class="fa-solid fa-caret-down"></i></a>
+          <div class="dropdown-content" id="menuProjetos"></div>
+        </li>
+        <li><button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button></li>
+        <li style="float:right;"><a href="#" onclick="logout()">Sair</a></li>
+        <li style="float:right;"><a id="nomeUsuario">Carregando...</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main style="padding: 30px; max-width: 900px; margin: auto;">
+
+    <h2 class="title">Enviar Evidências</h2>
+    <p class="subtitle">Selecione o projeto, escolha a iniciativa e envie o arquivo.</p>
+
+    <div class="card_n_hov" style="padding: 20px; margin-top: 20px; border-left: 6px solid var(--primary);">
+
+      <div class="campo-form">
+        <label>Projeto</label>
+        <select id="selectProjeto"></select>
+      </div>
+
+      <div class="campo-form">
+        <label>Iniciativa</label>
+        <select id="selectIniciativa"></select>
+      </div>
+
+      <div class="campo-form">
+        <label>Comprovante / Evidência</label>
+        <input type="file" id="inputArquivo" multiple>
+      </div>
+
+      <button id="btnEnviar" class="botao-primario" style="margin-top: 12px;">
+        <i class="fa-solid fa-upload"></i> Enviar Evidência
+      </button>
+    </div>
+
+    <h3 style="margin-top: 35px;">Evidências Enviadas</h3>
+    <p class="subtitle" style="margin-bottom: 10px;">Acompanhe a situação de análise.</p>
+
+    <div id="listaEvidencias" class="lista-projetos"></div>
+
+  </main>
+
+
+  <script src="js/escripiti.js"></script>
+  <script src="js/enviar_evidencias.js"></script>
+
+</body>
+
+</html>
