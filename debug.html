@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <title>DEBUG | PPA</title>
+  <link rel="stylesheet" href="css/layout.css">
+
+  <style>
+    body { padding: 30px; max-width: 700px; margin:auto; }
+    h2 { margin-top: 25px; }
+    .btn-line { display: flex; gap: 12px; margin: 12px 0; }
+    .btn {
+      padding: 8px 14px;
+      border-radius: 6px;
+      background: var(--surface);
+      box-shadow: var(--card-shadow);
+      text-decoration: none;
+      color: var(--text);
+      cursor: pointer;
+      border: 1px solid var(--muted);
+    }
+    .btn:hover { background: var(--light_prim); color: var(--primary-contrast); }
+    hr { margin: 25px 0; opacity: .4; }
+  </style>
+</head>
+
+<body>
+
+
+  <h2>Trocar Usuário</h2>
+
+  <div class="btn-line">
+    <button class="btn" onclick="setUsuarioAluno()">Entrar como Aluno</button>
+    <button class="btn" onclick="setUsuarioProfessor()">Entrar como Professor</button>
+    <button class="btn" onclick="resetUsuario()">Remover usuário</button>
+  </div>
+
+  <p><strong>Usuário Atual:</strong> <span id="usuarioAtual"></span></p>
+
+
+  <hr>
+
+  <h2>Local Storage</h2>
+  <button class="btn" onclick="limparLocalStorage()">Limpar Tudo</button>
+
+  <hr>
+
+  <h2>Navegação Rápida</h2>
+
+  <div class="btn-line"><a class="btn" href="index.html">Home</a></div>
+
+  <div class="btn-line">
+    <a class="btn" href="projetos.html">Projetos</a>
+    <a class="btn" href="meus_projetos.html">Meus Projetos</a>
+    <a class="btn" href="projeto_detalhes.html">Detalhes do Projeto</a>
+  </div>
+
+  <div class="btn-line">
+    <a class="btn" href="gerenciar_iniciativas.html">Gerenciar Projetos / Iniciativas</a>
+    <a class="btn" href="criar_projeto.html">Criar Projeto</a>
+  </div>
+
+  <div class="btn-line">
+    <a class="btn" href="enviar_evidencias.html">Enviar Evidências</a>
+    <a class="btn" href="aluno_evidencias.html">Minhas Evidências</a>
+    <a class="btn" href="validar_evidencias.html">Validar Evidências</a>
+  </div>
+  <br><br>
+
+
+  <script>
+    // Atualiza nome exibido
+    function atualizarUsuario() {
+      const u = JSON.parse(localStorage.getItem("usuario"));
+      document.getElementById("usuarioAtual").textContent = u ? `${u.nome} (${u.role})` : "Nenhum";
+    }
+
+    function setUsuarioAluno() {
+      localStorage.setItem("usuario", JSON.stringify({ nome: "Aluno: Teste", role: "aluno" }));
+      atualizarUsuario();
+      alert("Agora você está como Aluno");
+    }
+
+    function setUsuarioProfessor() {
+      localStorage.setItem("usuario", JSON.stringify({ nome: "Professor: Teste", role: "professor" }));
+      atualizarUsuario();
+      alert("Agora você está como Professor");
+    }
+
+    function resetUsuario() {
+      localStorage.removeItem("usuario");
+      atualizarUsuario();
+      alert("Usuário removido. Sistema se comportará como não logado.");
+    }
+
+    function limparLocalStorage() {
+      localStorage.clear();
+      atualizarUsuario();
+      alert("LocalStorage limpo!");
+    }
+
+    atualizarUsuario();
+  </script>
+
+</body>
+</html>

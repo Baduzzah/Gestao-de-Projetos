@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <title>Detalhes do Projeto | PPA</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/layout.css">
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a id="logo_navbar" href="index.html"><img width="122" height="79" src="imgs/logo_fatec_br.png"></a>
+                </li>
+
+                <li class="dropdown">
+                    <a class="dropbtn">Projetos <i class="fa-solid fa-caret-down"></i></a>
+                    <div class="dropdown-content" id="menuProjetos"></div>
+                </li>
+
+                <li><button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button></li>
+
+                <li style="float:right;"><a href="#" onclick="logout()">Sair</a></li>
+                <li style="float:right;"><a id="nomeUsuario">Carregando...</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main style="padding: 30px;">
+
+        <h2 class="title" id="tituloProjeto">Carregando...</h2>
+        <p id="descricaoProjeto" class="subtitle"></p>
+
+        <div id="bloco-detalhes" class="detalhes-projeto card_n_hov" style="padding:20px; margin-top:20px;">
+
+            <p><strong>Curso / Unidade:</strong> <span id="cursoProjeto"></span></p>
+
+            <h3 style="margin-top:15px;">Professores Responsáveis</h3>
+            <ul id="profsProjeto" style="margin-left:20px; list-style-type: disc;"></ul>
+
+        </div>
+
+
+        <div id="acoesAluno" class="acoes" style="display:none;">
+            <h3>Participação</h3>
+            <!--conectar esses botoes aq no db-->
+            <button class="botao-primario" id="btnParticipar">Participar do Projeto</button>
+            <a href="enviar_evidencias.html"><button class="botao-secundario" id="btnEnviarEvidencia">Enviar
+                    Evidência</button></a>
+        </div>
+
+        <div id="acoesProfessor" class="acoes" style="display:none;">
+            <h3>Gerenciamento</h3>
+            <a href="gerenciar_iniciativas.html"><button class="botao-primario">Adicionar Etapa</button></a>
+            <a href="validar_evidencias.html"><button class="botao-secundario">Validar Evidências</button></a>
+        </div>
+
+    </main>
+
+    <script src="js/escripiti.js"></script>
+    <script src="js/projeto_detalhes.js"></script>
+
+</body>
+
+</html>
