@@ -117,13 +117,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!parent.contains(e.target)) parent.classList.remove("show");
     });
 
-    // === Atalho de Debug (Ctrl + D) ===
+      // === Atalho de Debug (Ctrl + ç) ou (Ctrl + m) ===
     // Abre debug.html sem interferir no uso normal
     document.addEventListener("keydown", function (e) {
-        if (e.ctrlKey && e.key.toLowerCase() === "ç") {
+        if ((e.ctrlKey && e.key.toLowerCase() === "ç") || (e.ctrlKey && e.key.toLowerCase()==="m")) {
             e.preventDefault();
             window.location.href = "debug.html";
         }
     });
 });
+
 
