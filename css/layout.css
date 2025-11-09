@@ -105,6 +105,11 @@ textarea {
   color: var(--text);
 }
 
+main {
+  padding: 55px;
+  margin: auto;
+}
+
 /*cor do texto do dropdown d projetos*/
 .popup {
   color: var(--text);
@@ -279,6 +284,10 @@ textarea {
   background: var(--rejeitado);
 }
 
+.status-finalizado {
+  background: var(--rejeitado);
+}
+
 /* botão abrir */
 .botao-abrir {
   background: var(--light_prim);
@@ -383,6 +392,22 @@ select {
   cursor: not-allowed;
 }
 
+#btnVoltar {
+  position: absolute;
+  top: 125px;
+  /* distância da navbar */
+  left: 30px;
+  /* colado na esquerda */
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+
 
 /* Lista de evidências no formato "linhas" */
 .item-evidencia {
@@ -450,15 +475,34 @@ select {
   display: flex;
   gap: 12px;
   margin: 20px 0;
+  flex-wrap: wrap;
+  /* evita quebrar tudo no mobile */
 }
 
-.filtros-box input,
+.filtros-box input {
+  flex: 1;
+  /* <-- faz o input ocupar o espaço disponível */
+  min-width: 280px;
+  /* largura mínima pra não ficar pequeno demais */
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--muted);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1rem;
+}
+
 .filtros-box select {
   padding: 8px 12px;
   border-radius: 6px;
   border: 1px solid var(--muted);
   background: var(--surface);
   color: var(--text);
+  font-size: 1rem;
+}
+
+.subtitle{
+  font-size: 1.2rem;
 }
 
 .lista-projetos {

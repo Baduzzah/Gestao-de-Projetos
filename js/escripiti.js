@@ -65,6 +65,15 @@ function toggleTheme() {
     icon.className = novoTema === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
 }
 
+function voltar() {
+    if (document.referrer === "" || history.length <= 1) {
+        window.location.href = "index.html";
+    } else {
+        history.back();
+    }
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     const menu = document.getElementById("menuProjetos");

@@ -38,10 +38,15 @@
 
     </header>
 
-    <main style="padding: 30px; max-width: 1000px; margin:auto;">
+    <main>
+        <button id="btnVoltar" onclick="history.back()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
 
         <h2 class="title">Meus Projetos</h2>
         <p id="descricaoPagina" class="subtitle">Projetos nos quais você está participando.</p>
+
 
         <!-- BARRA DE PESQUISA -->
         <div class="filtros-box">
@@ -54,6 +59,8 @@
                 <option value="finalizado">Finalizado</option>
             </select>
         </div>
+
+
 
         <div class="lista-projetos"></div>
 
