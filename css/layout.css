@@ -508,11 +508,6 @@ select {
   border-color: var(--primary);
 }
 
-.lista-projetos {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
 
 .item-projeto {
   display: grid;

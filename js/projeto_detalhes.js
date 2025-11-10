@@ -23,6 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const projeto = projetos.find(p => p.id == id);
   if (!projeto) return tituloEl.textContent = "Projeto não encontrado";
 
+  document.getElementById("linkEnviarEvidencia").href = `enviar_evidencias.html?id=${projeto.id}`;
+
+
   // Preencher dados principais
   tituloEl.textContent = projeto.titulo;
   descEl.textContent = projeto.descricao || "(sem descrição)";

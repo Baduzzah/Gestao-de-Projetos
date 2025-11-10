@@ -1,97 +1,104 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const usuario = JSON.parse(localStorage.getItem("usuario")) || { nome: "Aluno", role: "aluno" };
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    if (!usuario || usuario.role !== "aluno") {
+        alert("Apenas alunos podem enviar evidências.");
+        window.location.href = "index.html";
+        return;
+    }
+
     document.getElementById("nomeUsuario").textContent = usuario.nome;
 
-    // Mock de projetos e iniciativas do aluno
-    const projetosDoAluno = [
-        {
-            id: 1, titulo: "Robótica Sustentável", iniciativas: [
-                { id: 11, nome: "Montagem das estruturas" },
-                { id: 12, nome: "Relatório final" }
-            ]
-        },
-        {
-            id: 2, titulo: "Feira de Jogos Educacionais", iniciativas: [
-                { id: 21, nome: "Design do jogo" }
-            ]
-        }
-    ];
+    let projetos = JSON.parse(localStorage.getItem("projetos") || "[]");
 
+    // pega id da URL se existir
+    const params = new URLSearchParams(window.location.search);
+    let idProjeto = params.get("id");
+
+    const selectProjetoBox = document.getElementById("selectProjetoBox");
     const selectProjeto = document.getElementById("selectProjeto");
-    const selectIniciativa = document.getElementById("selectIniciativa");
-    const listaEvidencias = document.getElementById("listaEvidencias");
 
-    projetosDoAluno.forEach(p => {
-        const opt = document.createElement("option");
-        opt.value = p.id;
-        opt.textContent = p.titulo;
-        selectProjeto.appendChild(opt);
-    });
+    // projetos nos quais o aluno está inscrito
+    const projetosAluno = projetos.filter(p =>
+        (p.participantes || []).some(a => a.nome === usuario.nome)
+    );
 
-    selectProjeto.addEventListener("change", atualizarIniciativas);
-    atualizarIniciativas();
+    // Se NÃO tiver id → aluno escolhe o projeto
+    if (!idProjeto) {
+        selectProjetoBox.style.display = "block";
 
-    function atualizarIniciativas() {
-        selectIniciativa.innerHTML = "";
-        const projetoSel = projetosDoAluno.find(p => p.id == selectProjeto.value);
-        projetoSel.iniciativas.forEach(i => {
-            const opt = document.createElement("option");
-            opt.value = i.id;
-            opt.textContent = i.nome;
-            selectIniciativa.appendChild(opt);
+        projetosAluno.forEach(p => {
+            selectProjeto.innerHTML += `<option value="${p.id}">${p.titulo}</option>`;
         });
+
+        selectProjeto.onchange = () => {
+            idProjeto = selectProjeto.value;
+        };
     }
 
-    // mock evidências já enviadas
-    const evidencias = [];
+    const inputArquivo = document.getElementById("inputArquivo");
+    const preview = document.getElementById("preview");
+    const previewImg = document.getElementById("previewImg");
+    const previewNome = document.getElementById("previewNome");
+    const comentarioAluno = document.getElementById("comentarioAluno");
 
-    document.getElementById("btnEnviar").addEventListener("click", () => {
-        const arquivos = document.getElementById("inputArquivo").files;
+    inputArquivo.onchange = () => {
+        const arquivo = inputArquivo.files[0];
+        if (!arquivo) return;
 
-        if (!arquivos.length) return alert("Selecione pelo menos um arquivo!");
+        preview.style.display = "block";
+        previewNome.textContent = arquivo.name;
 
-        // adiciona cada arquivo como uma evidência separada
-        for (let arquivo of arquivos) {
-            evidencias.push({
-                nome: arquivo.name,
-                status: "pendente",
-                projeto: selectProjeto.value,
-                iniciativa: selectIniciativa.value
-            });
+        if (arquivo.type.startsWith("image/")) {
+            previewImg.style.display = "block";
+            previewImg.src = URL.createObjectURL(arquivo);
+        } else {
+            previewImg.style.display = "none";
+        }
+    };
+
+    document.getElementById("btnEnviarEvidencia").onclick = () => {
+
+        if (!idProjeto) {
+            alert("Selecione um projeto primeiro!");
+            return;
         }
 
-        // limpa seleção visualmente
-        document.getElementById("inputArquivo").value = "";
+        const arquivo = inputArquivo.files[0];
+        if (!arquivo) {
+            alert("Selecione um arquivo.");
+            return;
+        }
 
-        render();
-    });
+        let projeto = projetos.find(p => p.id == idProjeto);
 
+        if (!projeto) {
+            alert("Projeto não encontrado.");
+            return;
+        }
 
-    function render() {
-        listaEvidencias.innerHTML = "";
+        const reader = new FileReader();
+        reader.onload = () => {
 
-        evidencias.forEach(ev => {
-            const item = document.createElement("div");
-            item.className = "item-evidencia";
+            projeto.evidencias = projeto.evidencias || [];
 
-            const status = (ev.status === "aprovada") ? "var(--aberto)" :
-                (ev.status === "rejeitada") ? "var(--rejeitado)" : "var(--pendente)";
+            projeto.evidencias.push({
+                id: Date.now(),
+                alunoNome: usuario.nome,
+                alunoRa: usuario.ra || "",
+                comentario: comentarioAluno.value.trim(),
+                arquivoBase64: reader.result,
+                status: "pendente",
+                feedbackProfessor: ""
+            });
 
-            item.innerHTML = `
-      <div class="status-pendente" style="background:${status};"></div>
-      <div>
-        <span class="evidencia-nome">${ev.nome}</span><br>
-        <small>Status: ${ev.status}</small>
-      </div>
-      <a href="#" title="Visualizar arquivo" style="text-decoration:none; font-size:14px;">📄</a>
-    `;
+            localStorage.setItem("projetos", JSON.stringify(projetos));
 
-            listaEvidencias.appendChild(item);
-        });
-    }
+            alert("Evidência enviada para validação!");
+            window.location.href = "aluno_evidencias.html";
+        };
 
+        reader.readAsDataURL(arquivo);
+    };
 
-
-    render();
 });

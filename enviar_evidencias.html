@@ -3,11 +3,11 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Enviar Evidências | PPA</title>
+  <title>Enviar Evidência | PPA</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
-  <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/layout.css">
 </head>
 
 <body>
@@ -17,7 +17,7 @@
       <ul>
         <li><a id="logo_navbar" href="index.html"><img width="122" src="imgs/logo_fatec_br.png"></a></li>
         <li class="dropdown">
-          <a class="dropbtn">Projetos <i class="fa-solid fa-caret-down"></i></a>
+          <a class="dropbtn">Projetos</a>
           <div class="dropdown-content" id="menuProjetos"></div>
         </li>
         <li><button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button></li>
@@ -33,39 +33,37 @@
       <i class="fa-solid fa-arrow-left"></i>
     </button>
 
+    <h2 class="title">Enviar Evidência</h2>
+    <p class="subtitle">Faça o upload de certificado, foto, documento ou comprovante.</p>
 
-    <h2 class="title">Enviar Evidências</h2>
-    <p class="subtitle">Selecione o projeto, escolha a iniciativa e envie o arquivo.</p>
-
-    <div class="card_n_hov" style="padding: 20px; margin-top: 20px; border-left: 6px solid var(--primary);">
-
-      <div class="campo-form">
-        <label>Projeto</label>
-        <select id="selectProjeto"></select>
-      </div>
-
-      <div class="campo-form">
-        <label>Iniciativa</label>
-        <select id="selectIniciativa"></select>
-      </div>
-
-      <div class="campo-form">
-        <label>Comprovante / Evidência</label>
-        <input type="file" id="inputArquivo" multiple>
-      </div>
-
-      <button id="btnEnviar" class="botao-primario" style="margin-top: 12px;">
-        <i class="fa-solid fa-upload"></i> Enviar Evidência
-      </button>
+    <div class="card_n_hov" id="selectProjetoBox" style="padding:20px; margin-top:20px; display:none;">
+      <label><strong>Selecione o Projeto</strong></label>
+      <select id="selectProjeto">
+        <option value="">Selecione...</option>
+      </select>
     </div>
 
-    <h3 style="margin-top: 35px;">Evidências Enviadas</h3>
-    <p class="subtitle" style="margin-bottom: 10px;">Acompanhe a situação de análise.</p>
 
-    <div id="listaEvidencias" class="lista-projetos"></div>
+    <div class="card_n_hov" style="padding:20px; margin-top:20px;">
+
+      <label><strong>Arquivo da Evidência</strong></label>
+      <input type="file" id="inputArquivo" accept="image/*,.pdf,.doc,.docx">
+      <br>
+      <div id="preview" style="margin-top:15px; display:none;">
+        <p><strong>Pré-visualização:</strong></p>
+        <img id="previewImg" style="max-width:250px; border-radius:8px; display:none;">
+        <p id="previewNome"></p>
+      </div>
+      <br>
+      <label style="margin-top:20px;"><strong>Comentário (opcional)</strong></label>
+      <div class="campo-form">
+        <textarea id="comentarioAluno" placeholder="Ex: participei da atividade como voluntário"></textarea>
+      </div>
+      <button id="btnEnviarEvidencia" class="botao-primario" style="margin-top:18px;">Enviar Evidência</button>
+
+    </div>
 
   </main>
-
 
   <script src="js/escripiti.js"></script>
   <script src="js/enviar_evidencias.js"></script>
