@@ -39,31 +39,54 @@
 
 
         <h2 class="title" id="tituloProjeto">Carregando...</h2>
+        <p id="descricaoProjeto" class="subtitle"></p>
+        <div id="arquivoBox" style="margin-top:20px; display:none;">
+            <h3>Arquivo do Projeto</h3>
+            <div id="arquivoConteudo"></div>
+        </div>
+
+
 
 
         <div id="bloco-detalhes" class="detalhes-projeto card_n_hov" style="padding:20px; margin-top:20px;">
 
             <p><strong>Curso / Unidade:</strong> <span id="cursoProjeto"></span></p>
+            <p><strong>Início previsto:</strong> <span id="dataInicio"></span></p>
+            <p><strong>Término previsto:</strong> <span id="dataFim"></span></p>
+
 
             <h3 style="margin-top:15px;">Professores Responsáveis</h3>
-            <ul id="profsProjeto" style="margin-left:20px; list-style-type: disc;"></ul>
+            <div class="card_n_hov" id="profsProjeto" style="margin-left:20px; list-style-type: disc;"></div>
 
         </div>
 
 
         <div id="acoesAluno" class="acoes" style="display:none;">
-            <h3>Participação</h3>
-            <!--conectar esses botoes aq no db-->
+            <h3 class="subtitle">Participação</h3>
             <button class="botao-primario" id="btnParticipar">Participar do Projeto</button>
-            <a href="enviar_evidencias.html"><button class="botao-secundario" id="btnEnviarEvidencia">Enviar
-                    Evidência</button></a>
+            <button class="botao-secundario" id="btnSairProjeto" style="display:none;">Sair do Projeto</button>
+            <a href="enviar_evidencias.html?id=${projeto.id}">
+                <button class="botao-secundario" id="btnEnviarEvidencia" style="display:none;">Enviar Evidência</button>
+            </a>
         </div>
 
+
         <div id="acoesProfessor" class="acoes" style="display:none;">
-            <h3>Gerenciamento</h3>
-            <a href="gerenciar_iniciativas.html"><button class="botao-primario">Adicionar Etapa</button></a>
-            <a href="validar_evidencias.html"><button class="botao-secundario">Validar Evidências</button></a>
+            <h3 class="subtitle">Gerenciamento</h3>
+            <a href="gerenciar_iniciativas.html?id=${id}">
+                <button class="botao-primario">Gerenciar Etapas e Iniciativas</button>
+            </a>
+            <button class="botao-secundario" id="btnFinalizarProjeto">Finalizar Projeto</button>
         </div>
+
+        <br><br>
+        <h3 class="subtitle">Etapas</h3>
+        <div class="card_n_hov" id="listaEtapas" style="margin-left:20px;"></div>
+
+        <h3 class="subtitle">Iniciativas</h3>
+        <div class="card_n_hov" id="listaIniciativas" style="margin-left:20px;"></div>
+
+
 
     </main>
 

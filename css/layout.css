@@ -502,7 +502,10 @@ select {
 }
 
 .subtitle{
+  padding: 8px 12px;
   font-size: 1.2rem;
+  border-left: 6px solid;
+  border-color: var(--primary);
 }
 
 .lista-projetos {

@@ -41,31 +41,58 @@ document.addEventListener("DOMContentLoaded", () => {
         renderProfs();
     };
 
-    document.getElementById("btnSalvarProjeto").onclick = () => {
+    document.getElementById("btnSalvarProjeto").onclick = async () => {
+
+        const titulo = document.getElementById("tituloProjeto").value.trim();
+        const tematica = document.getElementById("tematicaProjeto").value.trim();
+        const descricao = document.getElementById("descricaoProjeto").value.trim();
+        const curso = document.getElementById("cursoProjeto").value;
+        const dataInicio = document.getElementById("dataInicio").value;
+        const dataFim = document.getElementById("dataFim").value;
+
+        if (!titulo || !tematica || !descricao) {
+            alert("Preencha título, temática e descrição.");
+            return;
+        }
+
+        // Lê arquivo e converte p/ Base64
+        const arquivoInput = document.getElementById("arquivoProjeto");
+        let arquivoBase64 = null;
+        if (arquivoInput.files.length > 0) {
+            arquivoBase64 = await converterArquivoBase64(arquivoInput.files[0]);
+        }
 
         const novoProjeto = {
             id: Date.now(),
-            titulo: document.getElementById("tituloProjeto").value,
-            tematica: document.getElementById("tematicaProjeto").value,
-            descricao: document.getElementById("descricaoProjeto").value,
-            curso: document.getElementById("cursoProjeto").value,
+            titulo,
+            tematica,
+            descricao,
+            curso,
+            dataInicio,
+            dataFim,
             status: "aberto",
             etapas: [],
             iniciativas: [],
             participantes: [],
-            profsResponsaveis: profsResponsaveis
+            profsResponsaveis,
+            arquivo: arquivoBase64  // <-- Armazena o arquivo
         };
-
-        if (!novoProjeto.titulo || !novoProjeto.tematica || !novoProjeto.descricao) {
-            alert("Preencha título, temática e descrição.");
-            return;
-        }
 
         listaProjetos.push(novoProjeto);
         localStorage.setItem("projetos", JSON.stringify(listaProjetos));
 
         alert("Projeto criado com sucesso!");
         window.location.href = "projetos.html";
-
     };
+
+    // Função auxiliar converter arquivo → base64
+    function converterArquivoBase64(arquivo) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(arquivo);
+        });
+    }
+
 });
