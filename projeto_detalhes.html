@@ -41,9 +41,12 @@
         <h2 class="title" id="tituloProjeto">Carregando...</h2>
         <p id="descricaoProjeto" class="subtitle"></p>
         <div id="arquivoBox" style="margin-top:20px; display:none;">
-            <h3>Arquivo do Projeto</h3>
-            <div id="arquivoConteudo"></div>
+            <h3>Arquivos do Projeto</h3>
+            <div id="arquivoConteudo" class="grid-arquivos"
+                style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-top:10px;">
+            </div>
         </div>
+
 
 
 
@@ -92,7 +95,9 @@
     </main>
 
     <script src="js/escripiti.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="js/projeto_detalhes.js"></script>
+
 
 </body>
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>PPA - Portal de Projetos Acadêmicos</title>
+    <title>Validar Evidências | PPA</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -23,17 +23,13 @@
 
                 <li class="dropdown">
                     <a class="dropbtn">Projetos <i class="fa-solid fa-caret-down"></i></a>
-                    <div class="dropdown-content" id="menuProjetos">
-                        <!-- opções são adicionadas automaticamente via JS -->
-                    </div>
+                    <div class="dropdown-content" id="menuProjetos"></div>
                 </li>
-
 
                 <li><button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button></li>
 
-
                 <li style="float:right;">
-                    <a href="#" onclick="logout()">Sair</a> <!--Dps tem q adicionar o link pra pagina d login aq-->
+                    <a href="#" onclick="logout()">Sair</a>
                 </li>
 
                 <li style="float:right;">
@@ -41,27 +37,46 @@
                 </li>
             </ul>
         </nav>
-
     </header>
- 
 
     <main>
-
         <button id="btnVoltar" onclick="history.back()">
             <i class="fa-solid fa-arrow-left"></i>
         </button>
 
-
         <h2 class="title">Validar Evidências</h2>
-        <p class="subtitle">Abaixo estão as evidências pendentes para análise.</p>
+        <p class="subtitle">Filtre e valide as evidências enviadas pelos alunos.</p>
 
+        <!-- Filtros -->
+        <div class="filtros-box">
+            <input type="text" id="filtroTexto" placeholder="Pesquisar por projeto, iniciativa ou aluno...">
 
+            <select id="filtroProjeto">
+                <option value="">Todos os projetos</option>
+            </select>
+
+            <select id="filtroIniciativa">
+                <option value="">Todas as iniciativas</option>
+            </select>
+
+            <select id="filtroAluno">
+                <option value="">Todos os alunos</option>
+            </select>
+
+            <select id="filtroStatus">
+                <option value="">Todos os status</option>
+                <option value="pendente">Pendente</option>
+                <option value="aprovado">Aprovado</option>
+                <option value="rejeitado">Rejeitado</option>
+            </select>
+        </div>
 
         <div id="listaValidar" class="lista-validar"></div>
 
     </main>
 
     <script src="js/escripiti.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="js/validar_evidencias.js"></script>
 
 </body>

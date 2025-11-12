@@ -1,61 +1,165 @@
 document.addEventListener('DOMContentLoaded', () => {
-
   const usuario = JSON.parse(localStorage.getItem("usuario"));
   if (!usuario || usuario.role !== "aluno") {
-    alert("Apenas alunos podem ver suas evidências.");
+    alert("Apenas alunos podem visualizar suas evidências.");
     window.location.href = "index.html";
     return;
   }
 
   document.getElementById("nomeUsuario").textContent = usuario.nome;
 
-  let projetos = JSON.parse(localStorage.getItem("projetos") || "[]");
+  const projetos = JSON.parse(localStorage.getItem("projetos") || "[]");
   const lista = document.getElementById("listaEvidencias");
-  lista.innerHTML = "";
 
+  // --- Coleta evidências do aluno ---
   let evidenciasAluno = [];
-
   projetos.forEach(p => {
     (p.evidencias || []).forEach(ev => {
-      if (ev.alunoNome === usuario.nome) {
-        evidenciasAluno.push({ projeto: p.titulo, evidencia: ev });
-      }
+      if (ev.alunoNome === usuario.nome) evidenciasAluno.push({ projeto: p, evidencia: ev });
     });
   });
 
-  if (evidenciasAluno.length === 0) {
-    lista.innerHTML = `<p style="opacity:.7; margin-top:20px;">Você ainda não enviou nenhuma evidência.</p>`;
-    return;
-  }
+  // --- Filtros ---
+  const filtrosHTML = `
+    <div class="filtros-box">
+      <input type="text" id="filtroTexto" placeholder="Pesquisar por projeto, iniciativa ou status...">
 
-  evidenciasAluno.forEach(obj => {
-    const { projeto, evidencia } = obj;
+      <select id="filtroProjeto">
+        <option value="">Todos os projetos</option>
+      </select>
 
-    const card = document.createElement("div");
-    card.className = "card_n_hov";
-    card.style.padding = "15px";
+      <select id="filtroIniciativa">
+        <option value="">Todas as iniciativas</option>
+      </select>
 
-    const isImage = evidencia.arquivoBase64.startsWith("data:image/");
+      <select id="filtroStatus">
+        <option value="">Todos os status</option>
+        <option value="pendente">Pendente</option>
+        <option value="aprovado">Aprovado</option>
+        <option value="rejeitado">Rejeitado</option>
+      </select>
+    </div>
+  `;
+  lista.insertAdjacentHTML("beforebegin", filtrosHTML);
 
-    card.innerHTML = `
-      <h3>${projeto}</h3>
+  const filtroTexto = document.getElementById("filtroTexto");
+  const filtroProjeto = document.getElementById("filtroProjeto");
+  const filtroIniciativa = document.getElementById("filtroIniciativa");
+  const filtroStatus = document.getElementById("filtroStatus");
 
-      <p><strong>Status:</strong> 
-        ${evidencia.status === "pendente" ? "⏳ Aguardando validação" :
-        evidencia.status === "aprovado" ? "✅ Aprovado" :
-          "❌ Rejeitado"}
-      </p>
+  // --- Preenche selects ---
+  const projetosSet = new Set();
+  const iniciativasSet = new Set();
 
-      ${isImage
-        ? `<img src="${evidencia.arquivoBase64}" style="max-width:180px;border-radius:8px;margin:8px 0;">`
-        : `<a href="${evidencia.arquivoBase64}" target="_blank"><strong>Abrir Arquivo</strong></a>`}
-
-      ${evidencia.comentario ? `<p><strong>Comentário enviado:</strong> ${evidencia.comentario}</p>` : ""}
-
-      ${evidencia.feedbackProfessor ? `<p><strong>Feedback do professor:</strong> ${evidencia.feedbackProfessor}</p>` : ""}
-    `;
-
-    lista.appendChild(card);
+  evidenciasAluno.forEach(({ projeto, evidencia }) => {
+    projetosSet.add(projeto.titulo);
+    if (evidencia.iniciativa) iniciativasSet.add(evidencia.iniciativa);
   });
 
+  [...projetosSet].forEach(t => {
+    const opt = document.createElement("option");
+    opt.value = t;
+    opt.textContent = t;
+    filtroProjeto.appendChild(opt);
+  });
+
+  [...iniciativasSet].forEach(i => {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = i;
+    filtroIniciativa.appendChild(opt);
+  });
+
+  // --- Cores de status ---
+  function getStatusColor(status) {
+    switch (status) {
+      case "aprovado": return "var(--aberto)";
+      case "rejeitado": return "var(--rejeitado)";
+      case "pendente": return "var(--pendente)";
+      default: return "var(--andamento)";
+    }
+  }
+
+  // --- Render principal ---
+  function renderLista() {
+    lista.innerHTML = "";
+
+    let evidenciasFiltradas = evidenciasAluno.filter(({ projeto, evidencia }) => {
+      const texto = filtroTexto.value.toLowerCase().trim();
+      const matchTexto =
+        !texto ||
+        projeto.titulo.toLowerCase().includes(texto) ||
+        (evidencia.iniciativa || "").toLowerCase().includes(texto) ||
+        (evidencia.status || "").toLowerCase().includes(texto);
+
+      return (
+        matchTexto &&
+        (!filtroProjeto.value || projeto.titulo === filtroProjeto.value) &&
+        (!filtroIniciativa.value || evidencia.iniciativa === filtroIniciativa.value) &&
+        (!filtroStatus.value || evidencia.status === filtroStatus.value)
+      );
+    });
+
+    if (evidenciasFiltradas.length === 0) {
+      lista.innerHTML = `<p style="opacity:.7; margin-top:20px;">Nenhuma evidência encontrada.</p>`;
+      return;
+    }
+
+    evidenciasFiltradas.forEach(({ projeto, evidencia }) => {
+      const corStatus = getStatusColor(evidencia.status);
+      const card = document.createElement("div");
+      card.className = "card_n_hov";
+      card.style.cssText = `
+        padding: 15px;
+        margin: 10px;
+        display: inline-block;
+        vertical-align: top;
+        width: 300px;
+      `;
+
+      // --- Arquivos enviados ---
+      let arquivosHTML = "";
+      if (evidencia.arquivos && evidencia.arquivos.length > 0) {
+        arquivosHTML = `
+    <div class="grid-arquivos">
+      ${evidencia.arquivos.map(arq => `
+        <div class="arquivo-card">
+          ${arq.tipo.startsWith("image/")
+            ? `<img src="${arq.base64}" alt="${arq.nome}">`
+            : `<i class="fa-solid fa-file" style="font-size:2em; color:var(--andamento);"></i>`}
+          <p style="font-size:0.9em;">${arq.nome}</p>
+          <a href="${arq.base64}" download="${arq.nome}">
+            <i class="fa-solid fa-download"></i> Baixar
+          </a>
+        </div>
+      `).join("")}
+    </div>
+  `;
+      }
+
+
+      // --- Card HTML ---
+      card.innerHTML = `
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+          <div style="width:18px; height:18px; border-radius:50%; background:${corStatus};"></div>
+          <h3 style="margin:0; font-size:1.05em;">${projeto.titulo}</h3>
+        </div>
+
+        <p><strong>Iniciativa:</strong> ${evidencia.iniciativa || "—"}</p>
+        <p><strong>Status:</strong> ${evidencia.status.charAt(0).toUpperCase() + evidencia.status.slice(1)}</p>
+
+        <div style="margin:6px 0;">${arquivosHTML}</div>
+
+        ${evidencia.comentario ? `<p><em>"${evidencia.comentario}"</em></p>` : ""}
+        ${evidencia.feedbackProfessor ? `<p><strong>Feedback:</strong> ${evidencia.feedbackProfessor}</p>` : ""}
+      `;
+
+      lista.appendChild(card);
+    });
+  }
+
+  renderLista();
+  [filtroTexto, filtroProjeto, filtroIniciativa, filtroStatus].forEach(el =>
+    el.addEventListener("input", renderLista)
+  );
 });

@@ -240,6 +240,89 @@ main {
   color: var(--text);
 }
 
+/* Container das evidências */
+#listaValidar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 20px;
+  justify-content: flex-start;
+  /* ou center se preferir centralizar */
+}
+
+/* Cada card individual */
+#listaValidar .card_n_hov {
+  flex: 1 1 300px;
+  /* tamanho base */
+  max-width: 360px;
+  /* limite de largura */
+  background: var(--surface);
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .15);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Pequeno hover opcional */
+#listaValidar .card_n_hov:hover {
+  transform: scale(1.02);
+  box-shadow: 0 5px 14px rgba(0, 0, 0, .25);
+}
+
+/* === LAYOUT DAS EVIDÊNCIAS DO ALUNO (refinado) === */
+#listaEvidencias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 25px;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+/* Cada card de evidência */
+#listaEvidencias .card_n_hov {
+  flex: 1 1 300px;
+  max-width: 340px;
+  background: var(--surface);
+  border: 1px solid var(--muted);
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#listaEvidencias .card_n_hov:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* Filtros no topo */
+.filtros-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 15px 0 25px;
+  align-items: center;
+}
+
+.filtros-box input,
+.filtros-box select {
+  flex: 1;
+  min-width: 160px;
+  padding: 8px 12px;
+  border: 1px solid var(--muted);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+
+
+
+
 
 /* LISTA DE PROJETOS — estilo tabela horizontal */
 .lista-projetos {
@@ -501,7 +584,7 @@ select {
   font-size: 1rem;
 }
 
-.subtitle{
+.subtitle {
   padding: 8px 12px;
   font-size: 1.2rem;
   border-left: 6px solid;
@@ -517,4 +600,229 @@ select {
   background: var(--surface);
   border-radius: 8px;
   box-shadow: var(--card-shadow);
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9998;
+  /* fundo */
+}
+
+/* caixa do modal */
+.modal {
+  background: var(--surface);
+  padding: 22px;
+  border-radius: 12px;
+  width: 450px;
+  max-width: 95%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .4);
+  z-index: 9999;
+  /* caixa deve ficar ACIMA do overlay */
+  animation: fadeIn .25s ease-out;
+  border: 1px solid var(--muted);
+}
+
+/* textos */
+.modal label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+}
+
+/* campos */
+.modal input,
+.modal textarea,
+.modal select {
+  width: 100%;
+  margin: 6px 0 14px 0;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--muted);
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* rodapé */
+.botoes-modal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* animação */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(.93);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Fundo escuro */
+.modal-overlay {
+  display: none;
+  /* inicia escondido */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999 !important;
+}
+
+/* Caixa do modal */
+.modal {
+  background: var(--bg);
+  padding: 22px;
+  border-radius: 12px;
+  width: 420px;
+  max-width: 90vw;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  display: flex !important;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 10000 !important;
+}
+
+/* Botões alinhados */
+.botoes-modal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* =========================================
+   CORREÇÃO FINAL DO MODAL (aplicar no final)
+   ========================================= */
+
+/* Overlay inicialmente invisível */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .55);
+  display: none;
+  /* <--- IMPORTANTE */
+  justify-content: center;
+  align-items: center;
+  z-index: 9998;
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  padding: 22px;
+  border-radius: 12px;
+  width: 450px;
+  max-width: 95%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .4);
+  z-index: 9999;
+  border: 1px solid var(--muted);
+  animation: fadeIn .25s ease-out;
+}
+
+
+/* Botões alinhados */
+.botoes-modal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* === CORREÇÃO FINAL — LISTA DE EVIDÊNCIAS (ALUNO) === */
+#listaEvidencias {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 20px !important;
+  margin-top: 25px !important;
+  justify-items: center;
+  align-items: start;
+}
+
+#listaEvidencias .card_n_hov {
+  background: var(--surface);
+  border: 1px solid var(--muted);
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 340px;
+  padding: 18px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+#listaEvidencias .card_n_hov:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+#listaEvidencias img {
+  border-radius: 6px;
+  max-width: 100%;
+  margin-top: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .15);
+}
+
+/* === GRID PADRÃO PARA LISTAS DE ARQUIVOS === */
+.grid-arquivos {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+  gap: 14px !important;
+  margin-top: 12px !important;
+}
+
+.arquivo-card {
+  background: var(--surface);
+  border: 1px solid var(--muted);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.arquivo-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .2);
+}
+
+.arquivo-card img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  object-fit: cover;
+}
+
+.arquivo-card a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: var(--light_prim);
+  color: var(--primary-contrast);
+  border-radius: 6px;
+  padding: 6px 10px;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.arquivo-card a:hover {
+  background: var(--primary);
 }

@@ -10,9 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const listaProjetos = JSON.parse(localStorage.getItem("projetos") || "[]");
     const profsResponsaveis = [];
-
     const listaProfs = document.getElementById("listaProfs");
 
+    // ===== Renderizar professores =====
     function renderProfs() {
         listaProfs.innerHTML = "";
         profsResponsaveis.forEach((p, index) => {
@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const nome = document.getElementById("profNome").value.trim();
         const disciplina = document.getElementById("profDisciplina").value.trim();
         if (!nome || !disciplina) return;
-
         profsResponsaveis.push({ nome, disciplina });
         document.getElementById("profNome").value = "";
         document.getElementById("profDisciplina").value = "";
@@ -41,6 +40,36 @@ document.addEventListener("DOMContentLoaded", () => {
         renderProfs();
     };
 
+    // ===== Pré-visualização de múltiplos arquivos =====
+    const inputArquivo = document.getElementById("arquivoProjeto");
+    const previewContainer = document.createElement("div");
+    previewContainer.id = "previewArquivos";
+    previewContainer.style = "display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;";
+    inputArquivo.insertAdjacentElement("afterend", previewContainer);
+
+    inputArquivo.onchange = () => {
+        const arquivos = Array.from(inputArquivo.files);
+        previewContainer.innerHTML = "";
+
+        arquivos.forEach(arq => {
+            const item = document.createElement("div");
+            item.style.textAlign = "center";
+            item.style.maxWidth = "120px";
+
+            if (arq.type.startsWith("image/")) {
+                const img = document.createElement("img");
+                img.src = URL.createObjectURL(arq);
+                img.style.maxWidth = "100px";
+                img.style.borderRadius = "6px";
+                item.appendChild(img);
+            } else {
+                item.innerHTML = `<p style="font-size:0.9em;">📄 ${arq.name}</p>`;
+            }
+            previewContainer.appendChild(item);
+        });
+    };
+
+    // ===== Salvar projeto =====
     document.getElementById("btnSalvarProjeto").onclick = async () => {
 
         const titulo = document.getElementById("tituloProjeto").value.trim();
@@ -55,12 +84,15 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Lê arquivo e converte p/ Base64
-        const arquivoInput = document.getElementById("arquivoProjeto");
-        let arquivoBase64 = null;
-        if (arquivoInput.files.length > 0) {
-            arquivoBase64 = await converterArquivoBase64(arquivoInput.files[0]);
-        }
+        // Pega todos os arquivos e converte pra base64
+        const arquivos = Array.from(inputArquivo.files);
+        const arquivosBase64 = await Promise.all(
+            arquivos.map(arq => converterArquivoBase64(arq).then(base64 => ({
+                nome: arq.name,
+                tipo: arq.type,
+                base64
+            })))
+        );
 
         const novoProjeto = {
             id: Date.now(),
@@ -75,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
             iniciativas: [],
             participantes: [],
             profsResponsaveis,
-            arquivo: arquivoBase64  // <-- Armazena o arquivo
+            arquivos: arquivosBase64  // ⬅️ agora é um array
         };
 
         listaProjetos.push(novoProjeto);
@@ -85,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "projetos.html";
     };
 
-    // Função auxiliar converter arquivo → base64
+    // ===== Conversão arquivo → base64 =====
     function converterArquivoBase64(arquivo) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();

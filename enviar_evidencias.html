@@ -17,8 +17,10 @@
       <ul>
         <li><a id="logo_navbar" href="index.html"><img width="122" src="imgs/logo_fatec_br.png"></a></li>
         <li class="dropdown">
-          <a class="dropbtn">Projetos</a>
-          <div class="dropdown-content" id="menuProjetos"></div>
+          <a class="dropbtn">Projetos <i class="fa-solid fa-caret-down"></i></a>
+          <div class="dropdown-content" id="menuProjetos">
+            <!-- opções são adicionadas automaticamente via JS -->
+          </div>
         </li>
         <li><button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button></li>
         <li style="float:right;"><a href="#" onclick="logout()">Sair</a></li>
@@ -34,8 +36,9 @@
     </button>
 
     <h2 class="title">Enviar Evidência</h2>
-    <p class="subtitle">Faça o upload de certificado, foto, documento ou comprovante.</p>
+    <p class="subtitle">Envie uma ou mais evidências relacionadas a uma iniciativa.</p>
 
+    <!-- Seleção de projeto -->
     <div class="card_n_hov" id="selectProjetoBox" style="padding:20px; margin-top:20px; display:none;">
       <label><strong>Selecione o Projeto</strong></label>
       <select id="selectProjeto">
@@ -43,24 +46,31 @@
       </select>
     </div>
 
+    <!-- Seleção de iniciativa -->
+    <div class="card_n_hov" id="selectIniciativaBox" style="padding:20px; margin-top:20px; display:none;">
+      <label><strong>Selecione a Iniciativa</strong></label>
+      <select id="selectIniciativa">
+        <option value="">Selecione...</option>
+      </select>
+      <div id="iniciativaPreview" style="display:none; margin-top:15px;" class="card_n_hov"></div>
+    </div>
 
+    <!-- Envio de arquivos -->
     <div class="card_n_hov" style="padding:20px; margin-top:20px;">
-
-      <label><strong>Arquivo da Evidência</strong></label>
-      <input type="file" id="inputArquivo" accept="image/*,.pdf,.doc,.docx">
-      <br>
+      <label><strong>Arquivos da Evidência</strong></label>
+      <input type="file" id="inputArquivo" accept="image/*,.pdf,.doc,.docx" multiple>
       <div id="preview" style="margin-top:15px; display:none;">
+        <br>
         <p><strong>Pré-visualização:</strong></p>
-        <img id="previewImg" style="max-width:250px; border-radius:8px; display:none;">
-        <p id="previewNome"></p>
-      </div>
-      <br>
+        <div id="previewContainer" style="display:flex; flex-wrap:wrap; gap:10px;"></div>
+      </div> <br>
+
       <label style="margin-top:20px;"><strong>Comentário (opcional)</strong></label>
       <div class="campo-form">
         <textarea id="comentarioAluno" placeholder="Ex: participei da atividade como voluntário"></textarea>
       </div>
-      <button id="btnEnviarEvidencia" class="botao-primario" style="margin-top:18px;">Enviar Evidência</button>
 
+      <button id="btnEnviarEvidencia" class="botao-primario" style="margin-top:18px;">Enviar Evidência</button>
     </div>
 
   </main>

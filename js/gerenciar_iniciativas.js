@@ -66,37 +66,108 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderEtapas() {
         const listaEtapas = document.getElementById("listaEtapas");
         const selectEtapaRef = document.getElementById("selectEtapaRef");
+
         listaEtapas.innerHTML = "";
         selectEtapaRef.innerHTML = "";
 
-        projeto.etapas?.forEach((etapa, i) => {
-            listaEtapas.innerHTML += `
-            <div class="item-projeto">
-                <div class="status status-aberto"></div>
-                <div>${etapa}</div>
-                <button onclick="removerEtapa(${i})" class="botao-rejeitar">remover</button>
-            </div>
-            `;
+        projeto.etapas = projeto.etapas || [];
 
+        projeto.etapas.forEach((etapa, index) => {
+
+            // renderização visual da lista
+            listaEtapas.innerHTML += `
+            <div class="detalhes-projeto card_n_hov" draggable="true" data-index="${index}">
+                <div>
+                    <strong>${etapa.nome}</strong> <small>(${etapa.status})</small><br>
+                    <small>${etapa.inicio || "–"} → ${etapa.fim || "–"}</small>
+                </div>
+                <div>
+                    <button class="botao-secundario" onclick="editarEtapa(${index})">Editar</button>
+                    <button class="botao-rejeitar" onclick="removerEtapa(${index})">Remover</button>
+                </div>
+            </div>
+        `;
+
+            // ✅ preencher o SELECT corretamente
             const opt = document.createElement("option");
-            opt.value = etapa;
-            opt.textContent = etapa;
+            opt.value = etapa.nome;
+            opt.textContent = etapa.nome;
             selectEtapaRef.appendChild(opt);
         });
+
+        ativarDragDrop();
     }
+
+
+
+
+    document.getElementById("btnAddEtapa").onclick = () => {
+        const nome = document.getElementById("novaEtapaNome").value.trim();
+        const inicio = document.getElementById("novaEtapaInicio").value;
+        const fim = document.getElementById("novaEtapaFim").value;
+        const status = document.getElementById("novaEtapaStatus").value;
+
+        if (!nome) return alert("Digite o nome da etapa.");
+
+        projeto.etapas.push({ nome, inicio, fim, status });
+        salvar();
+        renderEtapas();
+    };
+
+
+    window.removerEtapa = (i) => {
+        if (!confirm("Excluir esta etapa?")) return;
+        projeto.etapas.splice(i, 1);
+        salvar();
+        renderEtapas();
+        renderIniciativas();
+    };
+
+    window.editarEtapa = (i) => {
+        const e = projeto.etapas[i];
+
+        abrirModal({
+            titulo: "Editar Etapa",
+            nome: e.nome,
+            descricao: e.descricao || "",
+            opcoes: ["planejada", "em andamento", "concluída"],
+            valorSelect: e.status,
+            salvar: () => {
+                e.nome = document.getElementById("modalNome").value.trim();
+                e.status = document.getElementById("modalSelect").value;
+                e.descricao = document.getElementById("modalDescricao").value.trim();
+                salvar();
+                renderEtapas();
+                document.getElementById("modalEditar").style.display = "none";
+            }
+        });
+    };
+
+
+
 
     function renderIniciativas() {
         const listaIniciativas = document.getElementById("listaIniciativas");
         listaIniciativas.innerHTML = "";
 
-        projeto.iniciativas?.forEach((i, index) => {
+        projeto.iniciativas = projeto.iniciativas || [];
+
+        projeto.iniciativas.forEach((i, index) => {
             listaIniciativas.innerHTML += `
-            <div class="item-projeto">
-                <div class="status status-aberto"></div>
-                <div><strong>${i.nome}</strong><br><small>${i.etapa}</small></div>
-                <button onclick="removerIniciativa(${index})">remover</button>
+        <div class="detalhes-projeto card_n_hov"" data-index="${index}">
+            <div>
+                <strong>${i.nome}</strong> <small>(${i.status})</small><br>
+                <small>Etapa: ${i.etapa}</small><br>
+                ${i.responsavel ? `<small>Responsável: ${i.responsavel}</small><br>` : ""}
+                ${i.descricao ? `<small>${i.descricao}</small>` : ""}
             </div>
-            `;
+
+            <div>
+                <button class="botao-secundario" onclick="editarIniciativa(${index})">Editar</button>
+                <button class="botao-rejeitar" onclick="removerIniciativa(${index})">Remover</button>
+            </div>
+        </div>
+        `;
         });
     }
 
@@ -119,39 +190,56 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    /* --- AÇÕES --- */
-    document.getElementById("btnAddEtapa").onclick = () => {
-        const nome = document.getElementById("novaEtapaNome").value.trim();
-        if (!nome) return;
-        projeto.etapas = projeto.etapas || [];
-        projeto.etapas.push(nome);
-        document.getElementById("novaEtapaNome").value = "";
-        salvar();
-        renderEtapas();
-    };
 
-    window.removerEtapa = (i) => {
-        projeto.etapas.splice(i, 1);
-        salvar();
-        renderEtapas();
-    };
 
     document.getElementById("btnAddIniciativa").onclick = () => {
         const nome = document.getElementById("novaIniciativaNome").value.trim();
         const etapa = document.getElementById("selectEtapaRef").value;
-        if (!nome || !etapa) return;
-        projeto.iniciativas = projeto.iniciativas || [];
-        projeto.iniciativas.push({ nome, etapa });
+        const responsavel = document.getElementById("novaIniciativaResp").value.trim();
+        const descricao = document.getElementById("novaIniciativaDesc").value.trim();
+        const status = document.getElementById("novaIniciativaStatus").value;
+
+        if (!nome || !etapa) return alert("Preencha pelo menos nome e etapa.");
+
+        projeto.iniciativas.push({ nome, etapa, responsavel, descricao, status });
+
         document.getElementById("novaIniciativaNome").value = "";
+        document.getElementById("novaIniciativaResp").value = "";
+        document.getElementById("novaIniciativaDesc").value = "";
+
         salvar();
         renderIniciativas();
     };
 
+    window.editarIniciativa = (i) => {
+        const x = projeto.iniciativas[i];
+
+        abrirModal({
+            titulo: "Editar Iniciativa",
+            nome: x.nome,
+            descricao: x.descricao || "",
+            opcoes: projeto.etapas.map(e => e.nome), // etapas no select
+            valorSelect: x.etapa,
+            salvar: () => {
+                x.nome = document.getElementById("modalNome").value.trim();
+                x.etapa = document.getElementById("modalSelect").value;
+                x.descricao = document.getElementById("modalDescricao").value.trim();
+                salvar();
+                renderIniciativas();
+                document.getElementById("modalEditar").style.display = "none";
+            }
+        });
+    };
+
+
+
     window.removerIniciativa = (i) => {
+        if (!confirm("Remover esta iniciativa?")) return;
         projeto.iniciativas.splice(i, 1);
         salvar();
         renderIniciativas();
     };
+
 
     /* --- TABS --- */
     document.querySelectorAll(".tab-btn").forEach(btn => {
@@ -191,6 +279,36 @@ document.addEventListener("DOMContentLoaded", () => {
         salvar();
         alert("Projeto finalizado!");
     };
+
+    function abrirModal(config) {
+        const overlay = document.getElementById("modalEditar");
+        document.getElementById("modalTitulo").textContent = config.titulo;
+        document.getElementById("modalNome").value = config.nome || "";
+        document.getElementById("modalDescricao").value = config.descricao || "";
+
+        const select = document.getElementById("modalSelect");
+        select.innerHTML = "";
+        config.opcoes.forEach(o => {
+            const opt = document.createElement("option");
+            opt.value = o;
+            opt.textContent = o;
+            select.appendChild(opt);
+        });
+        select.value = config.valorSelect || "";
+
+        overlay.style.display = "flex";
+
+        document.getElementById("modalSalvar").onclick = () => {
+            config.salvar();
+            overlay.style.display = "none";
+        };
+
+        document.getElementById("modalCancelar").onclick = () => {
+            overlay.style.display = "none";
+        };
+
+
+    }
 
 
     // Inicializa telas
