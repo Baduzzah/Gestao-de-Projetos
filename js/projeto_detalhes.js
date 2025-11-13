@@ -46,14 +46,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   configurarGrid();
 
-  // Função utilitária para baixar todos os arquivos
+  // Função para baixar todos os arquivos (gera zip local)
   async function baixarTodos(arquivos, nomeProjeto) {
     const zip = new JSZip();
     for (const arq of arquivos) {
       const base64 = arq.base64.split(",")[1];
       zip.file(arq.nome || "arquivo", base64, { base64: true });
     }
-
     const blob = await zip.generateAsync({ type: "blob" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -61,18 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
     a.click();
   }
 
-  // Renderização dos arquivos (novo formato)
+  // --- Renderização dos arquivos ---
   if (projeto.arquivos && projeto.arquivos.length > 0) {
     arquivoBox.style.display = "block";
     arquivoConteudo.innerHTML = "";
-
-    // botão “Baixar todos”
-    const btnBaixarTodos = document.createElement("button");
-    btnBaixarTodos.textContent = "⬇️ Baixar todos os arquivos";
-    btnBaixarTodos.className = "botao-primario";
-    btnBaixarTodos.style.marginBottom = "14px";
-    btnBaixarTodos.onclick = () => baixarTodos(projeto.arquivos, projeto.titulo);
-    arquivoBox.prepend(btnBaixarTodos);
 
     projeto.arquivos.forEach(arq => {
       const div = document.createElement("div");
@@ -107,6 +98,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       arquivoConteudo.appendChild(div);
     });
+
+    // adiciona botão DEPOIS do preview
+    const btnBaixarTodos = document.createElement("button");
+    btnBaixarTodos.textContent = "⬇️ Baixar todos os arquivos";
+    btnBaixarTodos.className = "botao-primario";
+    btnBaixarTodos.style.marginTop = "14px";
+    btnBaixarTodos.onclick = () => baixarTodos(projeto.arquivos, projeto.titulo);
+    arquivoBox.appendChild(btnBaixarTodos);
   }
   // compatibilidade com formato antigo (um único arquivo)
   else if (projeto.arquivo) {
@@ -117,14 +116,18 @@ document.addEventListener("DOMContentLoaded", () => {
     div.className = "arquivo-card";
     div.style.textAlign = "center";
 
-    if (projeto.arquivo.startsWith("data:image")) {
+    if (arq.tipo.startsWith("image/")) {
       div.innerHTML = `
-        <img src="${projeto.arquivo}" alt="Imagem" style="width:100%; border-radius:6px;">
-        <a href="${projeto.arquivo}" download="arquivo">
-          <i class="fa-solid fa-download"></i> Baixar
-        </a>
-      `;
-    } else if (projeto.arquivo.startsWith("data:application/pdf")) {
+    <img src="${arq.base64}" 
+         alt="${arq.nome}" 
+         style="width:120px; height:120px; object-fit:cover; border-radius:8px; margin-bottom:8px;">
+    <p style="font-size:0.85em; margin-bottom:6px; word-break:break-word;">${arq.nome}</p>
+    <a href="${arq.base64}" download="${arq.nome}">
+      <i class="fa-solid fa-download"></i> Baixar
+    </a>
+  `;
+    }
+    else if (projeto.arquivo.startsWith("data:application/pdf")) {
       div.innerHTML = `
         <i class="fa-solid fa-file-pdf" style="font-size:2em; color:#d32f2f;"></i>
         <a href="${projeto.arquivo}" target="_blank" class="botao-secundario">Abrir PDF</a>
@@ -224,4 +227,46 @@ document.addEventListener("DOMContentLoaded", () => {
       location.reload();
     };
   }
+
+  // === VISUALIZAR IMAGENS EM TAMANHO MAIOR ===
+  document.addEventListener("click", e => {
+    const img = e.target.closest(".arquivo-card img, .detalhes-projeto img");
+    if (!img) return;
+
+    // cria overlay
+    const overlay = document.createElement("div");
+    overlay.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    cursor: zoom-out;
+  `;
+
+    // imagem grande
+    const bigImg = document.createElement("img");
+    bigImg.src = img.src;
+    bigImg.alt = "Visualização ampliada";
+    bigImg.style.cssText = `
+    max-width: 90%;
+    max-height: 90vh;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    transition: transform 0.25s ease;
+  `;
+
+    overlay.appendChild(bigImg);
+    document.body.appendChild(overlay);
+    document.body.style.overflow = "hidden";
+
+    // fecha ao clicar fora
+    overlay.addEventListener("click", () => {
+      overlay.remove();
+      document.body.style.overflow = "auto";
+    });
+  });
+
 });

@@ -1,0 +1,142 @@
+/* === EVIDÊNCIAS — ESTILO HORIZONTAL (para aluno e professor) === */
+
+#listaEvidencias,
+#listaValidar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 25px;
+}
+
+/* CARD PRINCIPAL */
+#listaEvidencias .card_n_hov,
+#listaValidar .card_n_hov {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--muted);
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+  padding: 20px;
+  transition: 0.25s;
+}
+
+#listaEvidencias .card_n_hov:hover,
+#listaValidar .card_n_hov:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* COLUNA DE INFORMAÇÕES */
+.card_n_hov .info {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.card_n_hov h3 {
+  margin: 0;
+  font-size: 1.1em;
+}
+
+.card_n_hov p {
+  margin: 2px 0;
+  font-size: 0.95em;
+}
+
+/* DOT DE STATUS */
+.status-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* SEÇÃO DE ARQUIVOS */
+.card_n_hov .arquivos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 14px;
+  max-width: 45%;
+}
+
+/* MINI-CARDS DOS ARQUIVOS */
+.arquivo-card {
+  background: var(--surface);
+  border: 1px solid var(--muted);
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+  width: 130px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+  transition: 0.2s;
+}
+
+.arquivo-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .2);
+}
+
+.arquivo-card img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+/* LINKS DOS ARQUIVOS */
+.arquivo-card a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: var(--light_prim);
+  color: var(--primary-contrast);
+  border-radius: 6px;
+  padding: 5px 8px;
+  text-decoration: none;
+  font-size: 0.8rem;
+}
+
+.arquivo-card a:hover {
+  background: var(--primary);
+}
+
+/* FEEDBACK E BOTÕES (usado em validar evidências) */
+.card_n_hov textarea {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--muted);
+  padding: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.card_n_hov .botoes {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 900px) {
+  #listaEvidencias .card_n_hov,
+  #listaValidar .card_n_hov {
+    flex-direction: column;
+  }
+
+  .card_n_hov .arquivos {
+    max-width: 100%;
+  }
+}
